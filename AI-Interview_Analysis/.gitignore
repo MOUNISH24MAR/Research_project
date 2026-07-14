@@ -1,0 +1,51 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.ips
+crash.*
+
+# Runtime data
+backend/storage/recordings/videos/*
+backend/storage/recordings/audio/*
+backend/storage/reports/*
+backend/storage/temp/*
+!backend/storage/recordings/videos/.gitkeep
+!backend/storage/recordings/audio/.gitkeep
+!backend/storage/reports/.gitkeep
+!backend/storage/temp/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+.env.local
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db

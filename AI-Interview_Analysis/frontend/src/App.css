@@ -1,0 +1,211 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-screen-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  padding: 2rem;
+}
+
+.welcome-card {
+  max-width: 800px;
+  width: 100%;
+  padding: 4rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+}
+
+.welcome-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-logo-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-cyan) 100%);
+  position: relative;
+  box-shadow: 0 0 30px rgba(157, 78, 221, 0.4);
+}
+
+.welcome-logo-icon::after {
+  content: '';
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+.welcome-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(90deg, var(--text-primary) 0%, var(--accent-purple-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 650px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  width: 100%;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.feature-item {
+  display: flex;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  transition: border-color var(--transition-fast);
+}
+
+.feature-item:hover {
+  border-color: var(--border-glass-focus);
+}
+
+.feature-icon {
+  font-size: 2rem;
+}
+
+.feature-text h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.feature-text p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.begin-btn {
+  background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-purple-dark) 100%);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 1rem 3rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-neon-purple);
+  transition: all var(--transition-fast);
+  margin-top: 1rem;
+}
+
+.begin-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px var(--accent-purple);
+}
+
+.recording-toggle-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 2rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+  background: rgba(255, 255, 255, 0.02);
+  width: 100%;
+  margin-top: 1rem;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.toggle-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 22px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-glass);
+  transition: background-color var(--transition-fast);
+}
+
+.toggle-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: var(--text-secondary);
+  border-radius: 50%;
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.toggle-checkbox:checked + .toggle-switch {
+  background-color: rgba(157, 78, 221, 0.3);
+  border-color: var(--accent-purple-light);
+}
+
+.toggle-checkbox:checked + .toggle-switch::after {
+  transform: translateX(22px);
+  background-color: var(--accent-cyan);
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+.toggle-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.toggle-subtext {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  .welcome-card {
+    padding: 2rem 1.5rem;
+  }
+  .welcome-title {
+    font-size: 1.75rem;
+  }
+}

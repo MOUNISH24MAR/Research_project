@@ -1,0 +1,49 @@
+:root {
+  /* Colors */
+  --bg-dark-primary: #0a0512;
+  --bg-dark-secondary: #130a24;
+  --bg-glass-card: rgba(22, 12, 40, 0.65);
+  --bg-glass-card-hover: rgba(33, 18, 59, 0.8);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glass-focus: rgba(157, 78, 221, 0.4);
+  
+  /* Accent Colors */
+  --accent-purple: #9d4edd;
+  --accent-purple-light: #c77dff;
+  --accent-purple-dark: #5a189a;
+  
+  --accent-cyan: #00f0ff;
+  --accent-cyan-dark: #00b4d8;
+  
+  --accent-emerald: #00f5d4;
+  --accent-emerald-dark: #059669;
+  
+  --accent-danger: #ff007f;
+  --accent-danger-dark: #c1121f;
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #b3a5c7;
+  --text-muted: #6e5e85;
+  
+  /* Shadows & Blurs */
+  --shadow-main: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --shadow-neon-purple: 0 0 15px rgba(157, 78, 221, 0.35);
+  --shadow-neon-cyan: 0 0 15px rgba(0, 240, 255, 0.35);
+  --shadow-neon-danger: 0 0 15px rgba(255, 0, 127, 0.35);
+  --blur-glass: blur(16px);
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  
+  /* Fonts */
+  --font-sans: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s ease;
+}
