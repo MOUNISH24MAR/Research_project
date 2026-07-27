@@ -1,86 +1,75 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
 @import './variables.css';
 @import './reset.css';
 
-body {
-  font-family: var(--font-sans);
-  background: radial-gradient(circle at 50% 50%, var(--bg-dark-secondary) 0%, var(--bg-dark-primary) 100%);
-  background-attachment: fixed;
-  color: var(--text-primary);
-  min-height: 100vh;
+* {
+  box-sizing: border-box;
 }
 
-/* Custom Scrollbar */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Enterprise Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-dark-primary);
+  background: var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-glass);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-purple);
+  background: rgba(255, 255, 255, 0.25);
 }
 
-/* Glassmorphism Card Utility */
+/* Premium Card Utilities */
 .glass-panel {
-  background: var(--bg-glass-card);
-  backdrop-filter: var(--blur-glass);
-  -webkit-backdrop-filter: var(--blur-glass);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-main);
-  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
 }
 
 .glass-panel:hover {
-  border-color: var(--border-glass-focus);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Keyframe Animations */
-@keyframes pulse-recording {
+@keyframes pulse-dot {
   0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 0, 127, 0.7);
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
   }
   70% {
-    transform: scale(1.05);
-    box-shadow: 0 0 0 10px rgba(255, 0, 127, 0);
-  }
-  100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 0, 127, 0);
-  }
-}
-
-.recording-pulse {
-  animation: pulse-recording 2s infinite;
-}
-
-@keyframes wave-flow {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
   }
   100% {
-    transform: translateY(0);
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
   }
 }
 
-.wave-animation {
-  animation: wave-flow 1.5s ease-in-out infinite;
+.rec-pulse-dot {
+  animation: pulse-dot 2s infinite;
 }
 
-@keyframes progress-shimmer {
+@keyframes shimmer-move {
   0% {
     background-position: -200% 0;
   }
@@ -90,7 +79,13 @@ body {
 }
 
 .shimmer-bg {
-  background: linear-gradient(90deg, var(--accent-purple-dark) 25%, var(--accent-purple) 50%, var(--accent-purple-dark) 75%);
+  background: linear-gradient(90deg, #1E293B 25%, #2563EB 50%, #1E293B 75%);
   background-size: 200% 100%;
-  animation: progress-shimmer 2.5s infinite linear;
+  animation: shimmer-move 2.5s infinite linear;
+}
+
+.shimmer-accent {
+  background: linear-gradient(90deg, #2563EB 0%, #06B6D4 50%, #4F46E5 100%);
+  background-size: 200% 100%;
+  animation: shimmer-move 3s infinite ease-in-out;
 }

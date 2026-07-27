@@ -2,50 +2,97 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 2rem;
-  min-height: 250px;
-  border-radius: var(--radius-md);
-  background: var(--bg-glass-card);
-  border: 1px solid var(--border-glass);
+  padding: 1.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  min-height: 240px;
 }
 
 .question-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.category-tag-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(37, 99, 235, 0.3);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+}
+
+.tag-icon {
+  color: var(--primary);
 }
 
 .category-badge {
-  background: linear-gradient(135deg, var(--accent-purple-dark) 0%, var(--accent-purple) 100%);
-  color: var(--text-primary);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #60A5FA;
   text-transform: uppercase;
-  padding: 0.35rem 0.85rem;
-  border-radius: var(--radius-full);
-  letter-spacing: 0.05em;
-  box-shadow: var(--shadow-neon-purple);
+  letter-spacing: 0.04em;
 }
 
-.question-counter {
-  font-size: 0.875rem;
-  font-weight: 500;
+.question-counter-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
+  background: rgba(17, 24, 39, 0.6);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.question-counter-badge strong {
+  color: var(--text-primary);
+}
+
+.counter-icon {
+  color: var(--accent);
 }
 
 .question-body {
-  flex-grow: 1;
+  margin-bottom: 1.5rem;
+}
+
+.ai-eval-indicator {
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.sparkle-anim {
+  animation: spin-pulse 3s infinite linear;
+}
+
+@keyframes spin-pulse {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
 }
 
 .question-text {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.5;
   color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .narration-controls {
@@ -57,38 +104,36 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-glass);
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition: all var(--transition-fast);
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid var(--border-medium);
   color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
 .narrate-btn:hover {
-  background: rgba(157, 78, 221, 0.15);
-  border-color: var(--border-glass-focus);
+  background: rgba(37, 99, 235, 0.15);
+  border-color: rgba(37, 99, 235, 0.4);
   color: var(--text-primary);
 }
 
 .narrate-btn.playing {
-  background: rgba(0, 240, 255, 0.1);
-  border-color: rgba(0, 240, 255, 0.4);
-  color: var(--accent-cyan);
-  box-shadow: var(--shadow-neon-cyan);
+  background: rgba(6, 182, 212, 0.15);
+  border-color: rgba(6, 182, 212, 0.4);
+  color: var(--accent);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
 }
 
-.narrate-icon {
-  font-size: 1.1rem;
+.narrate-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-@media (max-width: 768px) {
-  .question-panel {
-    padding: 1.5rem;
-    min-height: 200px;
-  }
-  .question-text {
-    font-size: 1.2rem;
-  }
+
+.narrate-label {
+  font-family: var(--font-sans);
 }

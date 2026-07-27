@@ -51,6 +51,11 @@ class InterviewManager:
             
         session["status"] = "completed"
         session["end_time"] = get_current_timestamp()
+        
+        # We no longer generate behavioral reports on the backend per user instructions.
+        # The frontend accumulates the LLM technical scores.
+        session["report"] = None
+        
         logger.info(f"Ended interview session: {session_id}")
         return session
 

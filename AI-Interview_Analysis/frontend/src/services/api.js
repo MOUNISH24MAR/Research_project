@@ -20,6 +20,57 @@ class ApiService {
     }
   }
 
+  async evaluateAnswer(questionId, question, expectedAnswer, candidateAnswer) {
+    try {
+      const response = await fetch(`${BASE_URL}/interview/evaluate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          question_id: questionId,
+          question: question,
+          expected_answer: expectedAnswer,
+          candidate_answer: candidateAnswer 
+        })
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Failed to generate questions: ${response.statusText}`);
+      }
+      const result = await response.json();
+      return result.data;
+    } catch (error) {
+      console.error('Error evaluating answer:', error);
+      throw error;
+    }
+  }
+
+  async generateQuestions(jobRole, experienceLevel, jobDescription) {
+    try {
+      const response = await fetch(`${BASE_URL}/interview/generate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          job_role: jobRole,
+          experience: experienceLevel,
+          job_description: jobDescription 
+        })
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Failed to generate questions: ${response.statusText}`);
+      }
+      const result = await response.json();
+      return result.data;
+    } catch (error) {
+      console.error('Error generating questions:', error);
+      throw error;
+    }
+  }
+
   async endInterview(sessionId) {
     try {
       const response = await fetch(`${BASE_URL}/interview/end`, {
@@ -84,6 +135,28 @@ class ApiService {
       return result.success && result.data.status === 'healthy';
     } catch (error) {
       return false;
+    }
+  }
+
+  async uploadResume(file) {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const response = await fetch(`${BASE_URL}/upload/resume`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to upload resume: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      return result.data;
+    } catch (error) {
+      console.error('Error uploading resume:', error);
+      throw error;
     }
   }
 }

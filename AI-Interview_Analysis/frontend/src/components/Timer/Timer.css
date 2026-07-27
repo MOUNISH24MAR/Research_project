@@ -1,15 +1,19 @@
-.circular-timer-container {
+.circular-timer-card {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.timer-svg-wrapper {
   position: relative;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background: var(--bg-glass-card);
-  border: 1px solid var(--border-glass);
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .timer-svg {
@@ -18,65 +22,57 @@
 }
 
 .timer-progress-circle {
-  stroke-linecap: round;
-  transition: stroke-dashoffset 1s linear, stroke var(--transition-normal);
-  fill: transparent;
+  transition: stroke-dashoffset 0.3s ease, stroke 0.3s ease;
 }
 
-/* Color states */
-.timer-safe .timer-progress-circle {
-  stroke: var(--accent-cyan);
-  filter: drop-shadow(0 0 4px var(--accent-cyan));
-}
-
-.timer-safe .time-val {
-  color: var(--accent-cyan);
-}
-
-.timer-warning .timer-progress-circle {
-  stroke: var(--accent-purple);
-  filter: drop-shadow(0 0 4px var(--accent-purple));
-}
-
-.timer-warning .time-val {
-  color: var(--accent-purple-light);
-}
-
-.timer-danger {
-  animation: pulse-recording 1s infinite alternate;
-  border-color: rgba(255, 0, 127, 0.4);
-}
-
-.timer-danger .timer-progress-circle {
-  stroke: var(--accent-danger);
-  filter: drop-shadow(0 0 6px var(--accent-danger));
-}
-
-.timer-danger .time-val {
-  color: var(--accent-danger);
-}
-
-.timer-text {
+.timer-overlay {
   position: absolute;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
+.timer-overlay .timer-icon {
+  margin-bottom: 2px;
+}
+
 .time-val {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 800;
-  font-family: monospace;
-  line-height: 1.1;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1;
+  color: var(--text-primary);
 }
 
 .time-lbl {
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  font-size: 0.58rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
   margin-top: 2px;
+}
+
+.timer-card.timer-safe .timer-icon {
+  color: var(--primary);
+}
+
+.timer-card.timer-warning .timer-icon,
+.timer-card.timer-warning .time-val {
+  color: var(--warning);
+}
+
+.timer-card.timer-warning {
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.timer-card.timer-danger .timer-icon,
+.timer-card.timer-danger .time-val {
+  color: var(--danger);
+}
+
+.timer-card.timer-danger {
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.15);
 }

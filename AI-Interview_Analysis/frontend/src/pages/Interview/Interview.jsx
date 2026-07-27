@@ -4,7 +4,9 @@ import { useMicrophone } from '../../hooks/useMicrophone';
 import { useSpeech } from '../../hooks/useSpeech';
 import { useRecorder } from '../../hooks/useRecorder';
 import { apiService } from '../../services/api';
-import { questions } from '../../data/questions';
+import { questions as defaultQuestions } from '../../data/questions';
+import { BrainCircuit, Loader2, Mic, Radio, FileText, Sparkles, CheckCircle2, AlertCircle, ShieldAlert } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 import Header from '../../components/Header/Header';
 import Webcam from '../../components/Webcam/Webcam';
@@ -15,7 +17,9 @@ import Controls from '../../components/Controls/Controls';
 
 import './Interview.css';
 
-export const Interview = ({ backupRecording, onComplete }) => {
+export const Interview = ({ backupRecording, dynamicQuestions, matchScore, onComplete }) => {
+  const activeQuestions = dynamicQuestions && dynamicQuestions.length > 0 ? dynamicQuestions : defaultQuestions;
+  
   const [sessionId, setSessionId] = useState(null);
   const [status, setStatus] = useState('setup'); // 'setup', 'recording', 'submitting', 'error'
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -23,6 +27,7 @@ export const Interview = ({ backupRecording, onComplete }) => {
   const [totalTime, setTotalTime] = useState(0);
   const [isSubmittingFile, setIsSubmittingFile] = useState(false);
   const [apiError, setApiError] = useState(null);
+  const [transcript, setTranscript] = useState('');
 
   // Hardware switches (UI toggles)
   const [isCameraActive, setIsCameraActive] = useState(true);
@@ -36,29 +41,39 @@ export const Interview = ({ backupRecording, onComplete }) => {
 
   const overallTimerRef = useRef(null);
   const questionTimerRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const scoresRef = useRef([]);
 
-  const currentQuestion = questions[currentQuestionIndex];
+  const currentQuestion = activeQuestions[currentQuestionIndex];
 
-  // Request permissions in setup phase
+  // Request permissions and auto-start immediately
   useEffect(() => {
+    const autoInitialize = async () => {
+      try {
+        if (isCameraActive) await camera.startCamera();
+        if (isMicActive) await microphone.startMicrophone();
+        
+        // After hardware is ready, instantly start the session
+        await startInterviewSession();
+      } catch (err) {
+        console.warn("Hardware initialization error:", err);
+        setApiError("Failed to initialize camera/microphone. Please allow permissions.");
+      }
+    };
+    
     if (status === 'setup') {
-      const initPermissions = async () => {
-        try {
-          if (isCameraActive) await camera.startCamera();
-          if (isMicActive) await microphone.startMicrophone();
-        } catch (err) {
-          console.warn("Hardware initialization error during setup:", err);
-        }
-      };
-      initPermissions();
+      autoInitialize();
     }
     
     return () => {
       // Cleanup streams on unmount
       camera.stopCamera();
       microphone.stopMicrophone();
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
     };
-  }, [status]);
+  }, []);
 
   // Overall timer ticking
   useEffect(() => {
@@ -98,16 +113,63 @@ export const Interview = ({ backupRecording, onComplete }) => {
     };
   }, [status, currentQuestionIndex, isSubmittingFile]);
 
-  // Auto-narration of the active question
+  // Auto-narration and STT initialization
   useEffect(() => {
     if (status === 'recording' && currentQuestion) {
+      setTranscript(''); // Reset transcript for new question
+      
       // Wait 1 second before narrating to let components settle
       const timeout = setTimeout(() => {
-        speech.speak(currentQuestion.text);
+        speech.speak(currentQuestion.text, () => {
+          // After narration ends, start listening for candidate answer
+          startListening();
+        });
       }, 1000);
-      return () => clearTimeout(timeout);
+      
+      return () => {
+        clearTimeout(timeout);
+        stopListening();
+      };
     }
   }, [status, currentQuestionIndex]);
+
+  const startListening = () => {
+    if (!isMicActive) return;
+    
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+    
+    // Destroy existing if any
+    stopListening();
+    
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    
+    recognition.onresult = (event) => {
+      let currentString = '';
+      for (let i = 0; i < event.results.length; i++) {
+        currentString += event.results[i][0].transcript;
+      }
+      setTranscript(currentString);
+    };
+    
+    recognition.onerror = (e) => console.warn("Speech recognition error:", e.error);
+    
+    try {
+      recognition.start();
+      recognitionRef.current = recognition;
+    } catch (e) {
+      console.warn("Recognition start failed:", e);
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      try { recognitionRef.current.abort(); } catch(e) {}
+      recognitionRef.current = null; // Destroy recognizer
+    }
+  };
 
   const handleToggleCamera = () => {
     if (isCameraActive) {
@@ -137,7 +199,7 @@ export const Interview = ({ backupRecording, onComplete }) => {
       setSessionId(session.session_id);
       
       // 2. Initialize timer values
-      setTimeLeft(questions[0].duration);
+      setTimeLeft(activeQuestions[0].duration || 60);
       setTotalTime(0);
       
       // 3. Switch status
@@ -154,26 +216,61 @@ export const Interview = ({ backupRecording, onComplete }) => {
   };
 
   const uploadCurrentAnswer = async () => {
-    if (!backupRecording) return; // Skip recording and uploading if backup recording is disabled
     if (!sessionId || !currentQuestion) return;
     
     setIsSubmittingFile(true);
     try {
-      // Stop recording and retrieve Blob
-      const blob = await recorder.stopRecording();
-      
-      if (blob) {
-        // Upload compiled WebM recording to backend
-        await apiService.uploadRecording(
-          sessionId, 
-          currentQuestion.id, 
-          blob, 
-          'video'
+      // Stop and destroy Web Speech recognition
+      stopListening();
+
+      // 1. Evaluate Transcript with backend LLM
+      try {
+        const scoreData = await apiService.evaluateAnswer(
+          currentQuestion.id,
+          currentQuestion.original_question || currentQuestion.text,
+          currentQuestion.expected_answer || "",
+          transcript
         );
+        scoresRef.current.push({
+          questionId: currentQuestion.id,
+          questionText: currentQuestion.text,
+          transcript: transcript,
+          score: scoreData.score,
+          maxScore: scoreData.max_score,
+          skill: currentQuestion.skill || "General",
+          difficulty: currentQuestion.difficulty || "Medium",
+          expectedAnswer: currentQuestion.expected_answer || ""
+        });
+      } catch (evalErr) {
+        console.warn("Evaluation failed:", evalErr);
+        // Push a fallback score if it fails so the report still generates
+        scoresRef.current.push({
+          questionId: currentQuestion.id,
+          questionText: currentQuestion.text,
+          transcript: transcript,
+          score: 0,
+          maxScore: 10,
+          skill: currentQuestion.skill || "General",
+          difficulty: currentQuestion.difficulty || "Medium",
+          expectedAnswer: currentQuestion.expected_answer || ""
+        });
+      }
+
+      // 2. Stop video recording and retrieve Blob
+      if (backupRecording) {
+        const blob = await recorder.stopRecording();
+        if (blob) {
+          // Upload compiled WebM recording to backend
+          await apiService.uploadRecording(
+            sessionId, 
+            currentQuestion.id, 
+            blob, 
+            'video'
+          );
+        }
       }
     } catch (err) {
-      console.error("Recording upload failed:", err);
-      // We log but proceed so candidate isn't stuck
+      console.error("Answer submission failed:", err);
     } finally {
       setIsSubmittingFile(false);
     }
@@ -184,15 +281,13 @@ export const Interview = ({ backupRecording, onComplete }) => {
     await uploadCurrentAnswer();
     
     const nextIndex = currentQuestionIndex + 1;
-    if (nextIndex < questions.length) {
+    if (nextIndex < activeQuestions.length) {
       setCurrentQuestionIndex(nextIndex);
-      setTimeLeft(questions[nextIndex].duration);
-      // Restart recording for next question if enabled
+      setTimeLeft(activeQuestions[nextIndex].duration || 60);
       if (backupRecording) {
         recorder.startRecording(camera.stream, microphone.stream);
       }
     } else {
-      // Finished all questions
       finalizeInterview();
     }
   };
@@ -202,9 +297,9 @@ export const Interview = ({ backupRecording, onComplete }) => {
     await uploadCurrentAnswer();
     
     const nextIndex = currentQuestionIndex + 1;
-    if (nextIndex < questions.length) {
+    if (nextIndex < activeQuestions.length) {
       setCurrentQuestionIndex(nextIndex);
-      setTimeLeft(questions[nextIndex].duration);
+      setTimeLeft(activeQuestions[nextIndex].duration || 60);
       if (backupRecording) {
         recorder.startRecording(camera.stream, microphone.stream);
       }
@@ -223,13 +318,24 @@ export const Interview = ({ backupRecording, onComplete }) => {
       // Clean up hardware
       camera.stopCamera();
       microphone.stopMicrophone();
+      if (recognitionRef.current) {
+        try { recognitionRef.current.stop(); } catch(e){}
+      }
       
+      // Calculate final cumulative score
+      const totalScore = scoresRef.current.reduce((acc, curr) => acc + (curr.score || 0), 0);
+      const totalMaxScore = scoresRef.current.reduce((acc, curr) => acc + (curr.maxScore || 10), 0);
+
       // Pass data to parent view
       onComplete({
         sessionId,
-        totalQuestions: questions.length,
+        totalQuestions: activeQuestions.length,
         totalTime,
-        reportData: finalReport
+        reportData: finalReport,
+        matchScore,
+        evaluations: scoresRef.current,
+        finalScore: totalScore,
+        finalMaxScore: totalMaxScore
       });
     } catch (err) {
       console.error("Failed to finalize session:", err);
@@ -251,64 +357,28 @@ export const Interview = ({ backupRecording, onComplete }) => {
   // Rendering logic
   if (status === 'setup') {
     return (
-      <div className="interview-page-wrapper">
-        <Header activePageIndex="setup" />
-        
-        <div className="setup-container glass-panel">
-          <h2 className="setup-title">System Hardware Diagnostics</h2>
-          <p className="setup-desc">Please grant permission and adjust your settings before beginning.</p>
-          
-          <div className="setup-grid">
-            <div className="setup-hardware-card camera-card">
-              <div className="setup-preview">
-                {camera.isActive ? (
-                  <video
-                    ref={(el) => {
-                      if (el && camera.stream) el.srcObject = camera.stream;
-                    }}
-                    autoPlay
-                    playsInline
-                    muted
-                    className="setup-video-feed"
-                  />
-                ) : (
-                  <div className="setup-placeholder">📷</div>
-                )}
-              </div>
-              <button 
-                className={`setup-toggle-btn ${isCameraActive ? 'active' : ''}`}
-                onClick={handleToggleCamera}
-              >
-                {isCameraActive ? 'Disable Camera' : 'Enable Camera'}
-              </button>
-              {camera.error && <span className="hw-error">{camera.error}</span>}
-            </div>
-
-            <div className="setup-hardware-card mic-card">
-              <div className="setup-preview">
-                <div className="mic-meter-container">
-                  <div className={`mic-indicator-dot ${microphone.isActive ? 'active' : ''}`}>🎤</div>
-                  {microphone.isActive && <p className="mic-test-msg">Microphone Active & Connected</p>}
-                </div>
-              </div>
-              <button 
-                className={`setup-toggle-btn ${isMicActive ? 'active' : ''}`}
-                onClick={handleToggleMic}
-              >
-                {isMicActive ? 'Mute Microphone' : 'Enable Microphone'}
-              </button>
-              {microphone.error && <span className="hw-error">{microphone.error}</span>}
-            </div>
+      <div className="interview-page-wrapper loading-wrapper">
+        <div className="loading-container glass-panel">
+          <div className="loading-spinner-ring">
+            <BrainCircuit size={40} className="spinner-center-icon text-accent" />
           </div>
-
-          {apiError && <p className="backend-alert">{apiError}</p>}
-
-          <Controls 
-            status="setup"
-            isCameraActive={camera.isActive}
-            isMicActive={microphone.isActive}
-            onStartInterview={startInterviewSession}
-          />
+          <h2 className="loading-title">Initializing Diagnostic Hardware...</h2>
+          <p className="loading-subtext">Calibrating HD video stream and studio microphone inputs.</p>
+          {matchScore !== null && (
+            <div className="match-score-pill-banner">
+              <Sparkles size={16} className="text-accent" />
+              <div>
+                <h4>Resume Alignment Score: <strong>{matchScore}%</strong></h4>
+                <p>Questions have been dynamically generated based on candidate skill mapping.</p>
+              </div>
+            </div>
+          )}
+          {apiError && (
+            <div className="backend-alert-box">
+              <ShieldAlert size={16} />
+              <span>{apiError}</span>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -318,9 +388,11 @@ export const Interview = ({ backupRecording, onComplete }) => {
     return (
       <div className="interview-page-wrapper loading-wrapper">
         <div className="loading-container glass-panel">
-          <div className="loading-spinner shimmer-bg"></div>
-          <h2>Completing Interview...</h2>
-          <p>We are securing your session and building your dashboard. Please do not close this tab.</p>
+          <div className="loading-spinner-ring">
+            <Loader2 size={40} className="spinner-center-icon text-primary animate-spin" />
+          </div>
+          <h2 className="loading-title">Compiling Diagnostic Report...</h2>
+          <p className="loading-subtext">Evaluating transcript semantic similarity and calculating skill proficiency.</p>
         </div>
       </div>
     );
@@ -346,28 +418,52 @@ export const Interview = ({ backupRecording, onComplete }) => {
             />
             <ProgressBar 
               currentIndex={currentQuestionIndex} 
-              total={questions.length} 
+              total={activeQuestions.length} 
             />
           </div>
 
           <div className="grid-right">
-            <Timer 
-              timeLeft={timeLeft} 
-              duration={currentQuestion.duration} 
-            />
+            <div className="top-right-bar">
+              <Timer 
+                timeLeft={timeLeft} 
+                duration={currentQuestion.duration || 60} 
+              />
+            </div>
+
             <QuestionPanel 
               questionNumber={currentQuestionIndex + 1}
-              totalQuestions={questions.length}
+              totalQuestions={activeQuestions.length}
               questionText={currentQuestion.text}
               category={currentQuestion.category}
               isNarrating={speech.isNarrating}
               isPaused={speech.isPaused}
               onNarrateToggle={handleNarrateToggle}
             />
+            
+            {/* Live STT Transcript Display Console */}
+            <div className="transcript-console-card glass-panel">
+              <div className="console-header">
+                <div className="console-title">
+                  <Mic size={14} className="text-accent" />
+                  <span>Real-time Speech Recognition Stream</span>
+                </div>
+                <div className="live-pulse-badge">
+                  <span className="rec-pulse-dot"></span> LIVE STT
+                </div>
+              </div>
+              <p className={transcript ? "transcript-text active" : "transcript-text placeholder"}>
+                {transcript || "Listening for candidate spoken response..."}
+              </p>
+            </div>
           </div>
         </div>
         
-        {apiError && <p className="backend-alert">{apiError}</p>}
+        {apiError && (
+          <div className="backend-alert-box floating">
+            <AlertCircle size={16} />
+            <span>{apiError}</span>
+          </div>
+        )}
 
         <div className="interview-footer">
           <Controls 
@@ -378,7 +474,7 @@ export const Interview = ({ backupRecording, onComplete }) => {
             onToggleMic={handleToggleMic}
             onNextQuestion={handleNextQuestion}
             onFinishInterview={finalizeInterview}
-            isLastQuestion={currentQuestionIndex === questions.length - 1}
+            isLastQuestion={currentQuestionIndex === activeQuestions.length - 1}
             isSubmittingFile={isSubmittingFile}
           />
         </div>

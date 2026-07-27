@@ -2,97 +2,123 @@
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-glass);
+  justify-content: space-between;
+  border: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-lg);
 }
 
 .webcam-feed {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: calc(var(--radius-md) - 1px);
+  transform: scaleX(-1); /* Mirror camera output for realistic preview */
+}
+
+.recording-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(17, 24, 39, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-full);
+  color: var(--danger);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--danger);
 }
 
 .webcam-placeholder {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 1rem;
-  width: 100%;
+  justify-content: center;
   height: 100%;
-  background: rgba(10, 5, 18, 0.6);
-  color: var(--text-secondary);
+  padding: 2rem;
+  background: radial-gradient(circle at center, #1E293B 0%, #0B1120 100%);
+  color: var(--text-muted);
+  text-align: center;
 }
 
-.placeholder-icon {
-  font-size: 3rem;
-  opacity: 0.6;
-  animation: pulse-recording 3s infinite;
+.placeholder-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: var(--text-dim);
 }
 
 .placeholder-text {
   font-size: 1rem;
-  font-weight: 500;
-  color: var(--text-muted);
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 0.25rem 0;
 }
 
-.recording-indicator {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 0.4rem 0.8rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 0, 127, 0.4);
-  z-index: 5;
-}
-
-.rec-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: var(--accent-danger);
-  animation: pulse-recording 1.5s infinite;
-}
-
-.rec-text {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--accent-danger);
-  letter-spacing: 0.05em;
+.placeholder-subtext {
+  font-size: 0.8rem;
+  color: var(--text-dim);
 }
 
 .audio-visualizer-container {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 100%;
-  height: 60px;
-  background: linear-gradient(to top, rgba(10, 5, 18, 0.8) 0%, rgba(10, 5, 18, 0) 100%);
+  right: 0;
+  height: 56px;
+  background: linear-gradient(180deg, rgba(11, 17, 32, 0) 0%, rgba(11, 17, 32, 0.9) 100%);
   display: flex;
   align-items: center;
-  padding: 0 1.5rem;
+  justify-content: space-between;
+  padding: 0 1.25rem;
   z-index: 5;
 }
 
 .audio-canvas {
-  flex-grow: 1;
-  height: 40px;
-  pointer-events: none;
+  flex: 1;
+  height: 100%;
+  max-width: calc(100% - 150px);
 }
 
-.mic-status-icon {
-  font-size: 1.25rem;
-  margin-left: 1rem;
-  opacity: 0.8;
-  filter: drop-shadow(0 0 5px var(--accent-cyan));
+.mic-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-full);
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid var(--border-subtle);
+}
+
+.mic-status-pill.active {
+  color: var(--accent);
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+.mic-status-pill.muted {
+  color: var(--text-dim);
 }

@@ -1,0 +1,158 @@
+{
+  "candidate_overview": {
+    "target_role": "SDE-1",
+    "target_company": "Amazon",
+    "core_technical_stack": [
+      "Java",
+      "Spring Boot",
+      "MySQL"
+    ],
+    "key_project": "AI Interview System",
+    "interview_focus_paradigm": "High emphasis on Core Computer Science Fundamentals (DSA, OOP, System Internals), Low-Level Object-Oriented Design (OOD), and behavioral assessment using Amazon Leadership Principles."
+  },
+  "identified_topics": [
+    {
+      "name": "Java",
+      "category": "Programming Languages",
+      "why_interview_relevant": "Java is heavily utilized in Amazon backend services. As an SDE-1 candidate, a deep understanding of Java language internals, memory management, and collection frameworks is expected.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Conceptual understanding",
+        "Best practices",
+        "Optimization"
+      ],
+      "expected_depth": "Advanced",
+      "recommended_questions_count": 5
+    },
+    {
+      "name": "Spring Boot",
+      "category": "Frameworks",
+      "why_interview_relevant": "Spring Boot indicates experience in enterprise-level Java backend development. The candidate's understanding of dependency injection, application configuration, and REST API controllers will be assessed.",
+      "importance_level": "Medium",
+      "likely_focus_areas": [
+        "Practical implementation",
+        "Design decisions",
+        "Best practices"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "MySQL",
+      "category": "Databases",
+      "why_interview_relevant": "Relational databases are fundamental to enterprise transactional systems. An interviewer will explore schema design, normalization, ACID transactions, and index optimization.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Conceptual understanding",
+        "Design decisions",
+        "Optimization"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "AI Interview System",
+      "category": "Projects",
+      "why_interview_relevant": "This is the core project on the resume. An interviewer will use this to test the candidate's end-to-end ownership, engineering design decisions, and how they handled technical challenges and bottlenecks.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Design decisions",
+        "Problem solving",
+        "Real-world usage",
+        "Debugging"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 5
+    }
+  ],
+  "inferred_topics": [
+    {
+      "name": "Data Structures & Algorithms (DSA)",
+      "derived_from": [
+        "Amazon SDE-1 Requirements"
+      ],
+      "why_interview_relevant": "The primary filter in Amazon technical recruitment. SDE-1 candidates must demonstrate strong algorithmic thinking, optimal runtime/space complexity analysis (Big O), and problem-solving skills across arrays, strings, trees, and graphs.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Problem solving",
+        "Optimization",
+        "Conceptual understanding"
+      ],
+      "expected_depth": "Advanced",
+      "recommended_questions_count": 6
+    },
+    {
+      "name": "Object-Oriented Design (OOD)",
+      "derived_from": [
+        "Java",
+        "Amazon SDE-1 Requirements"
+      ],
+      "why_interview_relevant": "Amazon SDE-1 interviews feature a dedicated Low-Level Design (LLD) / OOD round. Candidates are evaluated on SOLID principles, design patterns (Factory, Singleton, Strategy, Observer), and writing clean, modular class interfaces.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Design decisions",
+        "Best practices",
+        "Conceptual understanding"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "Amazon Leadership Principles (LPs)",
+      "derived_from": [
+        "Amazon Interview Process"
+      ],
+      "why_interview_relevant": "LPs (e.g., Customer Obsession, Ownership, Bias for Action, Learn and Be Curious) form 50% of the interview evaluation weight. Candidates must present past engineering experiences structured in the STAR format.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Real-world usage",
+        "Problem solving"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 5
+    },
+    {
+      "name": "Concurrency & Multithreading",
+      "derived_from": [
+        "Java",
+        "AI Interview System"
+      ],
+      "why_interview_relevant": "Handling real-time media streams and processing parallel video/audio requests requires robust concurrency management. Tests understanding of thread pools, locks, race conditions, and synchronized operations.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Conceptual understanding",
+        "Problem solving",
+        "Debugging"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "REST API Security & Scalability",
+      "derived_from": [
+        "Spring Boot",
+        "AI Interview System"
+      ],
+      "why_interview_relevant": "Evaluates how the candidate structures client-server communications, manages sessions/authentication (e.g., JWT), handles request throttling, and optimizes large file uploads (such as audio/video recordings).",
+      "importance_level": "Medium",
+      "likely_focus_areas": [
+        "Design decisions",
+        "Optimization",
+        "Best practices"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 3
+    }
+  ],
+  "weak_or_missing_areas": [
+    "No cloud platform (e.g., AWS, GCP, Azure) usage listed, which is a major expectation for engineering at Amazon. The candidate should expect questions on cloud storage (e.g., S3 for video storage) and hosting.",
+    "Lack of detail on automated testing frameworks (JUnit, Mockito) for Spring Boot applications.",
+    "No concrete details regarding the scale of the AI Interview System (e.g., performance metrics, concurrent session handling limits, database throughput)."
+  ],
+  "recommended_preparation_topics": [
+    "Practicing Amazon-specific LeetCode Medium/Hard algorithmic challenges, focusing heavily on Trees, Graphs, BFS/DFS, Heaps, and Dynamic Programming.",
+    "Drafting LP behavioral responses in the STAR format using the 'AI Interview System' project to highlight 'Ownership', 'Deliver Results', and 'Bias for Action'.",
+    "Studying typical Object-Oriented Design (OOD) interview questions (e.g., designing a Parking Lot, Movie Ticket Booking System, or Vending Machine).",
+    "Familiarizing with basic AWS architecture concepts (S3, EC2, RDS, Lambda) and how they could be used to host and scale the 'AI Interview System'."
+  ]
+}

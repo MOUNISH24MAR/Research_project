@@ -1,0 +1,270 @@
+{
+  "candidate_overview": {
+    "name": "Kaviya S",
+    "degree": "B.Tech Information Technology",
+    "institution": "Kongu Engineering College, Perundurai",
+    "current_cgpa": "9.19",
+    "key_achievements": [
+      "MongoDB Certified Associate Developer",
+      "Double recipient of Academic Excellence Award (top 5% of class for 2023-24 and 2024-25)",
+      "First Prize in Paper Presentation at RVS Technical Campus (2024-25)",
+      "Third Prize in Coding Contest at Kongu Engineering College (2023-24)",
+      "Selected in Top 50 Teams in Smart India Hackathon (SIH) Internal Hackathon 2024"
+    ]
+  },
+  "identified_topics": [
+    {
+      "name": "MongoDB Certified Associate Developer",
+      "category": "Certifications",
+      "why_interview_relevant": "It proves the candidate has passed a formal industry assessment on NoSQL document modeling, indexing, CRUD operations, and administration, indicating a higher baseline of knowledge than normal college projects.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Conceptual understanding",
+        "Best practices",
+        "Design decisions"
+      ],
+      "expected_depth": "Advanced",
+      "recommended_questions_count": 6
+    },
+    {
+      "name": "Mentor Connect: Online Learning Application",
+      "category": "Projects",
+      "why_interview_relevant": "It is the candidate's primary full-stack web project. It showcases backend development, CRUD APIs, database schema design, and integration of external APIs (Calendly) into a single cohesive system.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Practical implementation",
+        "Design decisions",
+        "API Integration",
+        "Problem solving"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 5
+    },
+    {
+      "name": "Attendify: QR-Code Based Attendance App",
+      "category": "Projects",
+      "why_interview_relevant": "It demonstrates cross-platform mobile development skills using Flutter/Dart and integrating with Firebase services and local storage (Hive).",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Practical implementation",
+        "Real-world usage",
+        "Design decisions"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "Infix to Postfix Converter",
+      "category": "Projects",
+      "why_interview_relevant": "This project bridges theoretical computer science algorithms with frontend development, showing how Stack data structures are implemented to solve arithmetic expression conversion.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Conceptual understanding",
+        "Practical implementation",
+        "Problem solving"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "Java & C",
+      "category": "Programming Languages",
+      "why_interview_relevant": "They represent the candidate's primary languages for object-oriented programming (Java) and low-level memory operations / foundational coding (C).",
+      "importance_level": "Medium",
+      "likely_focus_areas": [
+        "Conceptual understanding",
+        "Best practices"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "NodeJS & ExpressJS",
+      "category": "Frameworks",
+      "why_interview_relevant": "These tools were used to build the backend server of the 'Mentor Connect' application, validating the candidate's backend architecture and server-side JS skills.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Practical implementation",
+        "Conceptual understanding",
+        "Optimization"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "ReactJS",
+      "category": "Frameworks",
+      "why_interview_relevant": "ReactJS is the primary frontend framework used in 'Mentor Connect' and the 'Infix to Postfix Converter'. It tests the candidate's ability to build interactive client-side user interfaces.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Practical implementation",
+        "Conceptual understanding",
+        "Best practices"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "MySQL & DBMS",
+      "category": "Databases",
+      "why_interview_relevant": "Relational databases are listed as a core area of interest. An interviewer will want to verify SQL query skills and fundamental RDBMS principles.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Conceptual understanding",
+        "Problem solving",
+        "Optimization"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 5
+    },
+    {
+      "name": "Machine Learning",
+      "category": "Technical Skills",
+      "why_interview_relevant": "It is listed under technical skills, indicating familiarity with data modeling, preprocessing, and predictive algorithms.",
+      "importance_level": "Low",
+      "likely_focus_areas": [
+        "Conceptual understanding"
+      ],
+      "expected_depth": "Basic",
+      "recommended_questions_count": 3
+    },
+    {
+      "name": "Coding Contest & Technical Quiz Prizes",
+      "category": "Achievements",
+      "why_interview_relevant": "These awards indicate strong competitive programming and quick problem-solving abilities under time constraints.",
+      "importance_level": "Medium",
+      "likely_focus_areas": [
+        "Problem solving"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 2
+    },
+    {
+      "name": "Class Representative",
+      "category": "Responsibilities",
+      "why_interview_relevant": "Demonstrates management capabilities, communication skills, adaptability, and leadership qualities within a student body.",
+      "importance_level": "Low",
+      "likely_focus_areas": [
+        "Real-world usage",
+        "Problem solving"
+      ],
+      "expected_depth": "Basic",
+      "recommended_questions_count": 2
+    }
+  ],
+  "inferred_topics": [
+    {
+      "name": "RESTful API Design",
+      "derived_from": [
+        "NodeJS",
+        "ExpressJS",
+        "Mentor Connect"
+      ],
+      "why_interview_relevant": "Since the candidate built a backend server with Express for routing and endpoints, they need to understand API standards, HTTP methods, CORS, status codes, and JSON exchange formats.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Design decisions",
+        "Best practices",
+        "Debugging"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "Database Schema Design (NoSQL vs. SQL)",
+      "derived_from": [
+        "MongoDB Certified Associate Developer",
+        "MySQL",
+        "Mentor Connect"
+      ],
+      "why_interview_relevant": "With background in both MySQL (relational) and MongoDB (document), the candidate is highly likely to face questions about schemas, normalization vs. denormalization, and choosing the right database model.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Design decisions",
+        "Conceptual understanding",
+        "Optimization"
+      ],
+      "expected_depth": "Advanced",
+      "recommended_questions_count": 5
+    },
+    {
+      "name": "Authentication & Authorization",
+      "derived_from": [
+        "Mentor Connect",
+        "Attendify",
+        "Firebase"
+      ],
+      "why_interview_relevant": "Apps like 'Mentor Connect' (mentor-mentee registration) and 'Attendify' require user accounts and distinct roles. Understanding JWTs, session tokens, and secure routes is vital.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Practical implementation",
+        "Best practices",
+        "Real-world usage"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "React State Management & Lifecycle Hooks",
+      "derived_from": [
+        "ReactJS",
+        "Mentor Connect",
+        "Infix to Postfix Converter"
+      ],
+      "why_interview_relevant": "A major component of React engineering is handling states, props, component mounting/updating, and managing state boundaries in complex layouts like form conversions.",
+      "importance_level": "High",
+      "likely_focus_areas": [
+        "Conceptual understanding",
+        "Practical implementation",
+        "Debugging"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 4
+    },
+    {
+      "name": "Third-Party API Integration & Webhooks",
+      "derived_from": [
+        "Mentor Connect",
+        "Calendly API"
+      ],
+      "why_interview_relevant": "Integrating a scheduling tool like Calendly into a learning platform requires token exchanges, handling asynchronous callbacks or webhooks, and managing rate limits.",
+      "importance_level": "Medium",
+      "likely_focus_areas": [
+        "Practical implementation",
+        "Error handling",
+        "Debugging"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 3
+    },
+    {
+      "name": "Local Storage (Hive) vs. Cloud Database (Firebase)",
+      "derived_from": [
+        "Attendify",
+        "Hive",
+        "Firebase"
+      ],
+      "why_interview_relevant": "Developing mobile apps requires local cache management (Hive) synchronized with cloud data stores (Firebase). It involves offline-first concepts and state sync.",
+      "importance_level": "Medium",
+      "likely_focus_areas": [
+        "Design decisions",
+        "Optimization",
+        "Real-world usage"
+      ],
+      "expected_depth": "Intermediate",
+      "recommended_questions_count": 3
+    }
+  ],
+  "weak_or_missing_areas": [
+    "No industrial internship or professional experience listed, leaving a gap in understanding real-world corporate development processes, CI/CD, and agile team workflows.",
+    "No project details or practical application demonstrating 'Machine Learning' skills, despite listing it under technical competencies.",
+    "Lack of relational database (MySQL) utilization in projects, despite DBMS being listed as a top area of interest and MySQL as a skill (all projects use MongoDB, Firebase, or Hive).",
+    "Missing deployment details for the backend of 'Mentor Connect' (Node/Express/MongoDB), only showing Vercel hosting for static frontend conversions."
+  ],
+  "recommended_preparation_topics": [
+    "Practicing Relational Database SQL queries (Joins, Indexing, Normalization, Transactions) to backup the interest in DBMS.",
+    "Deepening Stack algorithm knowledge beyond Infix-to-Postfix conversion (e.g., Parenthesis Matching, Next Greater Element, Stack-based iterative tree traversals).",
+    "System Design and Scalability principles for web and mobile platforms, specifically load balancing, caching strategies (Redis), and scaling database write/read operations.",
+    "CI/CD pipelines, Docker containerization, and hosting configurations for multi-tier applications (frontend hosted on Vercel/Netlify and backend hosted on AWS/Heroku/Render)."
+  ]
+}

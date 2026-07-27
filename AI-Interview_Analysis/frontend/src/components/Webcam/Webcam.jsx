@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Camera, CameraOff, Mic, MicOff, Radio, Video } from 'lucide-react';
 import './Webcam.css';
 
 export const Webcam = ({ stream, analyser, isRecording, isCameraActive, isMicActive }) => {
@@ -28,7 +29,7 @@ export const Webcam = ({ stream, analyser, isRecording, isCameraActive, isMicAct
     // Set canvas dimensions
     const resizeCanvas = () => {
       canvas.width = canvas.parentElement.clientWidth || 400;
-      canvas.height = 80; // Compact height
+      canvas.height = 64; // Compact height
     };
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
@@ -53,11 +54,11 @@ export const Webcam = ({ stream, analyser, isRecording, isCameraActive, isMicAct
       if (analyser && isMicActive) {
         analyser.getByteFrequencyData(dataArray);
 
-        // Draw frequency wave
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = '#00f0ff'; // Neon Cyan
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#00f0ff';
+        // Draw frequency wave using Cyan / Accent color
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#06B6D4'; // Accent Cyan
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#06B6D4';
         
         ctx.beginPath();
         
@@ -81,16 +82,15 @@ export const Webcam = ({ stream, analyser, isRecording, isCameraActive, isMicAct
         ctx.stroke();
         ctx.shadowBlur = 0; // Reset
       } else {
-        // Draw standard clean idle line
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = 'rgba(157, 78, 221, 0.4)'; // Dim purple
+        // Draw clean idle wave line
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = 'rgba(107, 114, 128, 0.4)';
         ctx.beginPath();
         ctx.moveTo(0, height / 2);
         
-        // Draw a slow undulating sine wave
         const time = Date.now() * 0.003;
         for (let x = 0; x < width; x++) {
-          const y = height / 2 + Math.sin(x * 0.01 + time) * 3;
+          const y = height / 2 + Math.sin(x * 0.01 + time) * 2;
           ctx.lineTo(x, y);
         }
         ctx.stroke();
@@ -110,9 +110,10 @@ export const Webcam = ({ stream, analyser, isRecording, isCameraActive, isMicAct
   return (
     <div className="webcam-container glass-panel">
       {isRecording && (
-        <div className="recording-indicator">
-          <span className="rec-dot"></span>
-          <span className="rec-text">REC</span>
+        <div className="recording-badge">
+          <span className="rec-pulse-dot rec-dot"></span>
+          <Radio size={12} className="rec-icon" />
+          <span className="rec-text">LIVE RECORDING</span>
         </div>
       )}
 
@@ -122,21 +123,25 @@ export const Webcam = ({ stream, analyser, isRecording, isCameraActive, isMicAct
           className="webcam-feed"
           autoPlay
           playsInline
-          muted // ALWAYS mute local output to avoid audio feedback!
+          muted
         />
       ) : (
         <div className="webcam-placeholder">
-          <div className="placeholder-icon">📷</div>
+          <div className="placeholder-icon-wrapper">
+            <CameraOff size={32} className="placeholder-icon" />
+          </div>
           <p className="placeholder-text">
-            {isCameraActive ? 'Initializing Webcam...' : 'Camera Disabled'}
+            {isCameraActive ? 'Initializing HD Video Feed...' : 'Camera Input Suspended'}
           </p>
+          <span className="placeholder-subtext">Click camera control below to toggle stream</span>
         </div>
       )}
 
       <div className="audio-visualizer-container">
         <canvas ref={canvasRef} className="audio-canvas" />
-        <div className="mic-status-icon">
-          {isMicActive ? '🎤' : '🔇'}
+        <div className={`mic-status-pill ${isMicActive ? 'active' : 'muted'}`}>
+          {isMicActive ? <Mic size={14} /> : <MicOff size={14} />}
+          <span className="mic-status-label">{isMicActive ? 'Audio Stream Active' : 'Muted'}</span>
         </div>
       </div>
     </div>

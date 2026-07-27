@@ -1,4 +1,5 @@
 import React from 'react';
+import { Volume2, Pause, Play, Tag, Sparkles, HelpCircle } from 'lucide-react';
 import './QuestionPanel.css';
 
 export const QuestionPanel = ({
@@ -13,13 +14,21 @@ export const QuestionPanel = ({
   return (
     <div className="question-panel glass-panel">
       <div className="question-header">
-        <span className="category-badge">{category}</span>
-        <span className="question-counter">
-          Question {questionNumber} of {totalQuestions}
-        </span>
+        <div className="category-tag-wrapper">
+          <Tag size={13} className="tag-icon" />
+          <span className="category-badge">{category || "Technical Evaluation"}</span>
+        </div>
+        
+        <div className="question-counter-badge">
+          <HelpCircle size={13} className="counter-icon" />
+          <span>Question <strong>{questionNumber}</strong> of <strong>{totalQuestions}</strong></span>
+        </div>
       </div>
       
       <div className="question-body">
+        <div className="ai-eval-indicator">
+          <Sparkles size={14} className="sparkle-anim" /> AI Generated Diagnostic Question
+        </div>
         <h2 className="question-text">{questionText}</h2>
       </div>
 
@@ -27,13 +36,13 @@ export const QuestionPanel = ({
         <button 
           onClick={onNarrateToggle}
           className={`narrate-btn ${isNarrating && !isPaused ? 'playing' : ''}`}
-          title={isNarrating && !isPaused ? "Pause Narration" : "Read Question"}
+          title={isNarrating && !isPaused ? "Pause Audio Narration" : "Play Speech Synthesis"}
         >
-          <span className="narrate-icon">
-            {isNarrating && !isPaused ? '⏸' : '🔊'}
+          <span className="narrate-icon-wrapper">
+            {isNarrating && !isPaused ? <Pause size={15} /> : <Volume2 size={15} />}
           </span>
           <span className="narrate-label">
-            {isNarrating && !isPaused ? 'Pause Narration' : (isPaused ? 'Resume Narration' : 'Read Aloud')}
+            {isNarrating && !isPaused ? 'Pause AI Narration' : (isPaused ? 'Resume Narration' : 'Read Out Loud')}
           </span>
         </button>
       </div>

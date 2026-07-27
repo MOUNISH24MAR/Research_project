@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { apiService } from '../../services/api';
+import { BrainCircuit, Clock, ShieldCheck, Cpu, Sparkles, Activity } from 'lucide-react';
 import './Header.css';
 
 export const Header = ({ sessionId, activePageIndex, totalTime }) => {
@@ -26,32 +27,46 @@ export const Header = ({ sessionId, activePageIndex, totalTime }) => {
 
   return (
     <header className="app-header glass-panel">
-      <div className="header-logo">
-        <div className="logo-icon"></div>
-        <h1>Antigravity AI Interviewer</h1>
+      <div className="header-brand">
+        <div className="brand-logo-wrapper">
+          <BrainCircuit className="brand-icon" size={24} />
+        </div>
+        <div className="brand-titles">
+          <div className="brand-name-row">
+            <h1 className="brand-title">Interview Intelligence</h1>
+            <span className="enterprise-badge">
+              <Sparkles size={11} className="badge-sparkle" /> Enterprise AI
+            </span>
+          </div>
+          <p className="brand-subtitle">Automated Behavioral & Technical Diagnostics</p>
+        </div>
       </div>
       
       <div className="header-meta">
         {sessionId && (
-          <div className="session-tag">
-            <span className="label">Session ID:</span>
-            <span className="value">{sessionId.substring(0, 8)}...</span>
+          <div className="meta-pill session-pill">
+            <Cpu size={14} className="pill-icon text-accent" />
+            <span className="pill-label">Session:</span>
+            <span className="pill-val mono">{sessionId.substring(0, 8)}...</span>
           </div>
         )}
         
         {activePageIndex === 'interview' && (
-          <div className="timer-tag">
-            <span className="timer-icon">⏱</span>
-            <span className="value">{formatTotalTime(totalTime)}</span>
+          <div className="meta-pill timer-pill">
+            <Clock size={14} className="pill-icon text-cyan" />
+            <span className="pill-label">Elapsed:</span>
+            <span className="pill-val mono highlight">{formatTotalTime(totalTime)}</span>
           </div>
         )}
 
         <div className={`status-badge ${isBackendOnline ? 'online' : 'offline'}`}>
           <span className="status-dot"></span>
-          <span className="status-text">{isBackendOnline ? 'Flask Connected' : 'Flask Offline'}</span>
+          <Activity size={13} className="status-icon" />
+          <span className="status-text">{isBackendOnline ? 'AI Core Active' : 'Offline / Reconnecting'}</span>
         </div>
       </div>
     </header>
   );
 };
+
 export default Header;
